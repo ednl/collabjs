@@ -1,0 +1,32 @@
+{
+  "name": "collabjs",
+  "version": "1.0.0",
+  "description": "Collaborative Painting",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ednl/collabjs.git"
+  },
+  "keywords": [
+    "p5js",
+    "node",
+    "paint",
+    "collab",
+    "server",
+    "distributed"
+  ],
+  "author": "E. Dronkert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ednl/collabjs/issues"
+  },
+  "homepage": "https://github.com/ednl/collabjs#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
