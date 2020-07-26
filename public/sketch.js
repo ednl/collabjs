@@ -1,7 +1,14 @@
-let col, pencil, clear, save, socket;
+// As seen on The Coding Train by Dan Shiffman
+// Video https://youtu.be/i6eP1Lw4gZk from 13 Apr 2016
+// Code https://github.com/CodingTrain/website/tree/master/Node/sockets
+//
+// Extras: scaling, colour picker, pen size, clear, save
+// TODO: group parts of the drawing by ClientID, selectively clear
+
+let col, pen, clear, save, socket;
 
 function setup() {
-	// createCanvas(1000, 1000);
+	// createCanvas(1000, 1000);  // How to leave room for zooming?
 	createCanvas(windowWidth, windowHeight);
 	background(255);
 	noStroke();
@@ -10,21 +17,21 @@ function setup() {
 	const g = floor(random(256));
 	const b = floor(random(256));
 	col = createColorPicker(color(r, g, b));
-	pencil = createSlider(1, 100, 10, 1);
-	pencil.style('width', '200px');
+	pen = createSlider(1, 100, 10, 1);
+	pen.style('width', '200px');
 	clear = createButton('Clear');
 	clear.mousePressed(() => background(255));
 	save = createButton('Save');
 	save.mousePressed(() => saveCanvas('drawing', 'jpg'));
 	posUI();
 
-	socket = io.connect('http://rainbow:3000');
-	socket.on('mouse', data => plot(data));
+	socket = io.connect('http://rainbow:3000');  // change to public server address when applicable
+	socket.on('draw', data => plot(data));
 }
 
 function posUI() {
 	col.position(0, 0);
-	pencil.position((width - pencil.width) / 2, 0);
+	pen.position((width - pen.width) / 2, 0);
 	clear.position(width - clear.width, 0);
 	save.position(width - clear.width - save.width - 5, 0);
 }
@@ -50,7 +57,7 @@ function mouseDragged() {
 		const data = {
 			x: x,
 			y: y,
-			s: pencil.value(),
+			s: pen.value(),
 			r: red(c),
 			g: green(c),
 			b: blue(c),
@@ -58,7 +65,7 @@ function mouseDragged() {
 			h: height
 		};
 		plot(data);
-		socket.emit('mouse', data);
+		socket.emit('draw', data);
 		return false;  // to prevent dragging the page/canvas on touch devices
 	}
 }
