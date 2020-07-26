@@ -1,6 +1,7 @@
 let col, pencil, clear, save, socket;
 
 function setup() {
+	// createCanvas(1000, 1000);
 	createCanvas(windowWidth, windowHeight);
 	background(255);
 	noStroke();
@@ -11,13 +12,13 @@ function setup() {
 	col = createColorPicker(color(r, g, b));
 	pencil = createSlider(1, 100, 10, 1);
 	pencil.style('width', '200px');
-	clear = createButton('Wissen');
+	clear = createButton('Clear');
 	clear.mousePressed(() => background(255));
-	save = createButton('Bewaren');
-	save.mousePressed(() => saveCanvas('tekening', 'jpg'));
+	save = createButton('Save');
+	save.mousePressed(() => saveCanvas('drawing', 'jpg'));
 	posUI();
 
-	socket = io.connect('http://localhost:3000');
+	socket = io.connect('http://rainbow:3000');
 	socket.on('mouse', data => plot(data));
 }
 
@@ -44,7 +45,7 @@ function plot(data) {
 function mouseDragged() {
 	const x = mouseX;
 	const y = mouseY;
-	if (x >= 0 && x < width && y >= 20 && y < width) {
+	if (x >= 0 && x < width && y >= 30 && y < width) {
 		const c = col.color();
 		const data = {
 			x: x,
@@ -58,5 +59,6 @@ function mouseDragged() {
 		};
 		plot(data);
 		socket.emit('mouse', data);
+		return false;  // to prevent dragging the page/canvas on touch devices
 	}
 }
